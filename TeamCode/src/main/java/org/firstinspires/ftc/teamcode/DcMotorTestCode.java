@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class DcMotorTestCode extends OpMode {
 
     public DcMotor motor;
-    double speed = 0.5;
+    double speed = 0.25;
 
     @Override
     public void init (){

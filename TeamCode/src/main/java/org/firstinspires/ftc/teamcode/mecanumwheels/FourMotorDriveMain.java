@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mecanumwheels;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp
-public class FTCMainProject extends OpMode {
-
+public class FourMotorDriveMain extends OpMode {
     RobotOrientationDrive driveObj = new RobotOrientationDrive();
     double forward, strafe, rotate;
     public HardwareMap hwMap;
@@ -14,6 +13,7 @@ public class FTCMainProject extends OpMode {
 
     @Override
     public void init() {
+
         driveObj.roInitializeMotors(hwMap);
     }
 

@@ -1,15 +1,19 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-public class RobotOrientationDrive {
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+public class MechanumDrive {
 
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
+    private IMU imu;
 
-    public void roInitializeMotors(HardwareMap hwMap) {
+
+    public void initializeMotors(HardwareMap hwMap) {
         frontLeftMotor = hwMap.get(DcMotor.class, "front_left_motor");
         frontRightMotor = hwMap.get(DcMotor.class, "front_right_motor");
         backLeftMotor = hwMap.get(DcMotor.class, "back_left_motor");
@@ -23,9 +27,18 @@ public class RobotOrientationDrive {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //initialize IMU for Field Orientation Drive
+        imu = hwMap.get(IMU.class, "imu");
+
+        RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+
+        imu.initialize(new IMU.Parameters(revOrientation));
+
     }
 
-    public void roDrive(double forward, double strafe, double rotate) {
+    public void robotOrientationDrive(double forward, double strafe, double rotate) {
         double frontLeftPower = forward + strafe + rotate;
         double frontRightPower =  forward - strafe - rotate;
         double backLeftPower = forward - strafe + rotate;
@@ -46,4 +59,17 @@ public class RobotOrientationDrive {
 
     }
 
+    public void fieldOrientationDrive(double forward, double strafe, double rotate) {
+        double theta = Math.atan2(forward, strafe);
+        double r = Math.hypot(strafe, forward);
+
+        theta = AngleUnit.normalizeRadians(theta -
+                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+
+        double newForward = r * Math.sin(theta);
+        double newStrafe = r * Math.cos(theta);
+
+        this.robotOrientationDrive(newForward, newStrafe, rotate);
+
+    }
 }

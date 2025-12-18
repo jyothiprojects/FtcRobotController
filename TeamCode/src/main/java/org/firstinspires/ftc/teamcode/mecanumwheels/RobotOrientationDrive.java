@@ -1,18 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mecanumwheels;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
-public class FieldOrientationDrive {
+/*Four Motor RobotOrientation Drive code */
+public class RobotOrientationDrive {
 
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
-    private IMU imu;
 
-    public void foInitializeMotors(HardwareMap hwMap) {
+    public void roInitializeMotors(HardwareMap hwMap) {
         frontLeftMotor = hwMap.get(DcMotor.class, "front_left_motor");
         frontRightMotor = hwMap.get(DcMotor.class, "front_right_motor");
         backLeftMotor = hwMap.get(DcMotor.class, "back_left_motor");
@@ -26,31 +22,13 @@ public class FieldOrientationDrive {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        imu = hwMap.get(IMU.class, "imu");
-
-        RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
-
-        imu.initialize(new IMU.Parameters(revOrientation));
-
     }
 
-    public void foDrive(double forward, double strafe, double rotate) {
-        double theta = Math.atan2(forward, strafe);
-        double r = Math.hypot(strafe, forward);
-
-        theta = AngleUnit.normalizeRadians(theta -
-                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-
-        double newForward = r * Math.sin(theta);
-        double newStrafe = r * Math.cos(theta);
-
-        double frontLeftPower = newForward + newStrafe + rotate;
-        double frontRightPower =  newForward - newStrafe - rotate;
-        double backLeftPower = newForward - newStrafe + rotate;
-        double backRightPower = newForward + newStrafe - rotate;
+    public void roDrive(double forward, double strafe, double rotate) {
+        double frontLeftPower = forward + strafe + rotate;
+        double frontRightPower =  forward - strafe - rotate;
+        double backLeftPower = forward - strafe + rotate;
+        double backRightPower = forward + strafe - rotate;
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;

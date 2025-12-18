@@ -1,21 +1,19 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mecanumwheels;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class MechanumDrive {
+/*Four Motor FieldOrientation Drive code */
+public class FieldOrientationDrive {
 
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     private IMU imu;
 
-
-    public void initializeMotors(HardwareMap hwMap) {
+    public void foInitializeMotors(HardwareMap hwMap) {
         frontLeftMotor = hwMap.get(DcMotor.class, "front_left_motor");
         frontRightMotor = hwMap.get(DcMotor.class, "front_right_motor");
         backLeftMotor = hwMap.get(DcMotor.class, "back_left_motor");
@@ -29,7 +27,7 @@ public class MechanumDrive {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //initialize IMU for Field Orientation Drive
+
         imu = hwMap.get(IMU.class, "imu");
 
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
@@ -40,11 +38,20 @@ public class MechanumDrive {
 
     }
 
-    public void robotOrientationDrive(double forward, double strafe, double rotate) {
-        double frontLeftPower = forward + strafe + rotate;
-        double frontRightPower =  forward - strafe - rotate;
-        double backLeftPower = forward - strafe + rotate;
-        double backRightPower = forward + strafe - rotate;
+    public void foDrive(double forward, double strafe, double rotate) {
+        double theta = Math.atan2(forward, strafe);
+        double r = Math.hypot(strafe, forward);
+
+        theta = AngleUnit.normalizeRadians(theta -
+                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+
+        double newForward = r * Math.sin(theta);
+        double newStrafe = r * Math.cos(theta);
+
+        double frontLeftPower = newForward + newStrafe + rotate;
+        double frontRightPower =  newForward - newStrafe - rotate;
+        double backLeftPower = newForward - newStrafe + rotate;
+        double backRightPower = newForward + newStrafe - rotate;
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;
@@ -61,17 +68,4 @@ public class MechanumDrive {
 
     }
 
-    public void fieldOrientationDrive(double forward, double strafe, double rotate) {
-        double theta = Math.atan2(forward, strafe);
-        double r = Math.hypot(strafe, forward);
-
-        theta = AngleUnit.normalizeRadians(theta -
-                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-
-        double newForward = r * Math.sin(theta);
-        double newStrafe = r * Math.cos(theta);
-
-        this.robotOrientationDrive(newForward, newStrafe, rotate);
-
-    }
 }

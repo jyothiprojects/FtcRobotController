@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class DcMotorTestCode extends OpMode {
 
     public DcMotor motor;
+
+    
     double speed = 0.25;
 
     @Override
@@ -19,6 +21,7 @@ public class DcMotorTestCode extends OpMode {
 
     @Override
     public void loop() {
-        motor.setPower(speed);
+       motor.setPower(speed);
+
     }
 }

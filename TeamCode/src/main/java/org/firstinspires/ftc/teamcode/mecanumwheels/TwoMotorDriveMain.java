@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp
 public class TwoMotorDriveMain extends OpMode {
     TwoMotorDrive driveObj = new TwoMotorDrive();
-
     public HardwareMap hwMap;
 
     @Override
@@ -15,8 +14,8 @@ public class TwoMotorDriveMain extends OpMode {
         driveObj.init(hwMap);
     }
 
+    @Override
     public void loop() {
-
         double leftPower, rightPower;
         double forward, right;
 

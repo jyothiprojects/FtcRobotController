@@ -15,6 +15,7 @@ public class ServoPosAndRot {
 
     public void setServoPos(double angle){
         servoPos.setPosition(angle);
+
     }
 
     public void setServoRot(double power) {

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.testcode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -11,11 +12,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class IMUTesting extends OpMode {
 
     private IMU imu;
-    doible heading;
+    double heading;
 
     @Override
     public void init() {
-        imu = hwMap.get(IMU.class, "imu");
+        imu = HardwareMap.get(IMU.class, "imu");
 
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,

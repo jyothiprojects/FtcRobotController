@@ -16,7 +16,7 @@ public class SingleMotorMain extends OpMode {
     @Override
     public void init (){
         motor = hardwareMap.get(DcMotor.class, "single_motor");
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(BRAKE);
     }
 

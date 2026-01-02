@@ -39,7 +39,7 @@ public class IMUTesting extends OpMode {
             telemetry.addLine("Heading2");
         }
         else {
-            telemetry.addLine("Heading3")
+            telemetry.addLine("Heading3");
         }
 
     }
